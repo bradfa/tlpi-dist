@@ -1,0 +1,24 @@
+/**********************************************************************\
+*                Copyright (C) Michael Kerrisk, 2010.                  *
+*                                                                      *
+* This program is free software. You may use, modify, and redistribute *
+* it under the terms of the GNU Affero General Public License as       *
+* published by the Free Software Foundation, either version 3 or (at   *
+* your option) any later version. This program is distributed without  *
+* any warranty. See the file COPYING for details.                      *
+\**********************************************************************/
+
+/* rdwrn.h
+
+   Header file for rdwrn.c.
+*/
+#ifndef RDWRN_H
+#define RDWRN_H
+
+#include <sys/types.h>
+
+ssize_t readn(int fd, void *buf, size_t len);
+
+ssize_t writen(int fd, const void *buf, size_t len);
+
+#endif

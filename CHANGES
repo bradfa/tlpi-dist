@@ -1,0 +1,97 @@
+This file summarizes the changes that have been made since publication
+to the program examples printed in "The Linux Programming Interface".
+Background on some of these changes can be found in the online errata
+for TLPI, available at http://man7.org/tlpi/errata/.
+
+2010-11-13
+        sockets/us_abstract_bind.c
+                The code was improved as per the errata for page 1176.
+
+2011-01-17
+        timers/real_timer.c
+                A mistake in the ordering of the code in main() was fixed.
+                See the erratum for page 483.
+
+2011-02-17
+        psem/thread_incr_psem.c
+                Fixed an error in a comment. See the erratum for page 1102.
+
+2011-04-05
+        threads/thread_multijoin.c.
+                Fixed a race condition. See the erratum for page 649.
+        threads/prod_condvar.c
+                Fixed a race condition. The problem was similar to that
+                described in the erratum for page 649.
+        threads/prod_no_condvar.c
+                Fixed a race condition. The problem was similar to that
+                described in the erratum for page 649.
+
+2011-04-19
+        altio/demo_sigio.c
+                Fixed a race condition. See the erratum for page 1349.
+        daemons/daemon_SIGHUP.c
+                Fixed a race condition. See the erratum for page 774.
+
+2011-05-18
+        signals/t_kill.c
+                Fixed an error in a diagnostic message. See the erratum
+                for page 406.
+
+2011-07-06
+        Makefile
+                Added missing "memalloc" to the directory list.
+        memalloc/free_and_sbrk.c
+                Added feature test macro definition (_BSD_SOURCE).
+                See the erratum for page 142.
+
+2011-08-11
+        acl/acl_view.c
+                Fixed a small bug as per the erratum for page 336.
+
+2011-09-04
+        pipes/popen_glob.c
+        procexec/make_zombie.c
+        sockets/inet_sockets.c
+                Removed an unnecessary assignment statement that added
+                a terminating null byte to the string buffer output by
+                snprintf().  See the erratum for page 555.
+
+2011-12-05
+        dirs_links/t_unlink.c
+                Added a comment referring to the erratum for page 348.
+
+2011-12-06
+        pty/unbuffer.c
+                Change parent exit status when read() returns <= 0
+                from EXIT_FAILURE to EXIT_SUCCESS.
+
+2011-12-13
+        signals/catch_rtsigs.c
+                Restore 3 lines that were accidentally omitted at the
+                end of this program. See the erratum for page 463.
+
+2011-12-31
+        threads/thread_incr.c
+                Make global variable 'glob' volatile, so that the program
+                more easily produces "incorrect" behavior, even in the face
+                of compiler optimizations. See the erratum for page 632.
+
+2012-02-16
+        lib/alt_functions.c
+                Fix indentation in ALT_posix_openpt().
+
+2012-04-03
+        lib/Makefile
+        lib/Build_ename.sh
+                Refactor, so that Build_ename.sh produces output on stdout,
+                rather than to a named file.
+
+2012-04-06
+        lib/itimerspec_from_str.c
+                Conditionally make the content of this file empty if
+                compiling on MacOSX, since that operating system doesn't
+		define the 'itimerspec' structure.
+		(Only in "dist" version of code.)
+        Makefile.inc.MacOSX
+                Remove '-lrt' from the IMPL_LDLIBS definition, since there
+                is no librt on MacOSX.

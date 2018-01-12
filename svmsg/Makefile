@@ -1,7 +1,7 @@
 include ../Makefile.inc
 
 GEN_EXE = svmsg_chqbytes svmsg_file_client svmsg_file_server \
-	svmsg_create svmsg_receive svmsg_rm msg_send 
+	svmsg_create svmsg_receive svmsg_rm svmsg_send 
 
 LINUX_EXE = svmsg_info svmsg_ls 
 

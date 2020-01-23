@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 20-2 */
 
 /* ignore_pending_sig.c
 
@@ -32,7 +34,7 @@ handler(int sig)
 
     printf("Caught signal %d (%s)\n", sig, strsignal(sig));
     fflush(NULL);
-} /* handler  */
+}
 
 int
 main(int argc, char *argv[])
@@ -71,8 +73,7 @@ main(int argc, char *argv[])
 
     sleep(2);
     printf("Ignoring SIGINT\n");
-    if (signal(SIGINT, SIG_IGN) == SIG_ERR)
-        errExit("signal");
+    if (signal(SIGINT, SIG_IGN) == SIG_ERR)     errExit("signal");
 
     /* Redisplay mask of pending signals */
 

@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 19-1 */
 
 /* demo_inotify.c
 
@@ -60,7 +62,7 @@ int
 main(int argc, char *argv[])
 {
     int inotifyFd, wd, j;
-    char buf[BUF_LEN];
+    char buf[BUF_LEN] __attribute__ ((aligned(8)));
     ssize_t numRead;
     char *p;
     struct inotify_event *event;

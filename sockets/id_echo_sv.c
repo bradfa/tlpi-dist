@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 60-2 */
 
 /* id_echo_sv.c
 
@@ -29,7 +31,7 @@ main(int argc, char *argv[])
 {
     int sfd;
     ssize_t numRead;
-    socklen_t addrlen, len;
+    socklen_t len;
     struct sockaddr_storage claddr;
     char buf[BUF_SIZE];
     char addrStr[IS_ADDR_STR_LEN];
@@ -37,7 +39,7 @@ main(int argc, char *argv[])
     if (becomeDaemon(0) == -1)
         errExit("becomeDaemon");
 
-    sfd = inetBind(SERVICE, SOCK_DGRAM, &addrlen);
+    sfd = inetBind(SERVICE, SOCK_DGRAM, NULL);
     if (sfd == -1) {
         syslog(LOG_ERR, "Could not create server socket (%s)", strerror(errno));
         exit(EXIT_FAILURE);

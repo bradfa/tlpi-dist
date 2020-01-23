@@ -10,11 +10,9 @@ all : ${EXE}
 
 allgen : ${GEN_EXE}
 
-acl_update : acl_update.o
-	${CC} -o $@ acl_update.o ${CFLAGS} ${LDLIBS} ${LINUX_LIBACL}
-
-acl_view : acl_view.o
-	${CC} -o $@ acl_view.o ${CFLAGS} ${LDLIBS} ${LINUX_LIBACL}
+LDLIBS = ${IMPL_LDLIBS} ${LINUX_LIBACL}
+	# All of the programs in this directory need the 
+	# ACL library, libacl.
 
 clean : 
 	${RM} ${EXE} *.o
@@ -22,4 +20,4 @@ clean :
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

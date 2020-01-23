@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 23-2 */
 
 /* timed_read.c
 
@@ -46,7 +48,7 @@ main(int argc, char *argv[])
 
     alarm((argc > 1) ? getInt(argv[1], GN_NONNEG, "num-secs") : 10);
 
-    numRead = read(STDIN_FILENO, buf, BUF_SIZE - 1);
+    numRead = read(STDIN_FILENO, buf, BUF_SIZE);
 
     savedErrno = errno;                 /* In case alarm() changes it */
     alarm(0);                           /* Ensure timer is turned off */

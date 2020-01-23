@@ -1,9 +1,10 @@
 include ../Makefile.inc
 
-GEN_EXE = demo_timerfd ptmr_null_evp ptmr_sigev_signal ptmr_sigev_thread \
+GEN_EXE = cpu_burner cpu_multi_burner cpu_multithread_burner \
+	ptmr_null_evp ptmr_sigev_signal ptmr_sigev_thread \
 	real_timer t_nanosleep timed_read
 
-LINUX_EXE = t_clock_nanosleep demo_timerfd
+LINUX_EXE = demo_timerfd t_clock_nanosleep
 
 EXE = ${GEN_EXE} ${LINUX_EXE}
 
@@ -11,21 +12,13 @@ all : ${EXE}
 
 allgen : ${GEN_EXE}
 
-demo_timerfd: demo_timerfd.o
-	${CC} -o $@ demo_timerfd.o ${CFLAGS} ${LDLIBS} ${LINUX_LIBRT}
-
-ptmr_null_evp: ptmr_null_evp.o
-	${CC} -o $@ ptmr_null_evp.o ${CFLAGS} ${LDLIBS} ${LINUX_LIBRT}
-
-ptmr_sigev_signal: ptmr_sigev_signal.o
-	${CC} -o $@ ptmr_sigev_signal.o ${CFLAGS} ${LDLIBS} ${LINUX_LIBRT}
-
-ptmr_sigev_thread: ptmr_sigev_thread.c
-	${CC} -o $@ ${IMPL_THREAD_FLAGS} ptmr_sigev_thread.c \
-	    		${CFLAGS} ${LDLIBS} ${LINUX_LIBRT}
-
-t_clock_nanosleep: t_clock_nanosleep.o
-	${CC} -o $@ t_clock_nanosleep.o ${CFLAGS} ${LDLIBS} ${LINUX_LIBRT}
+LDLIBS = ${IMPL_LDLIBS} ${LINUX_LIBRT} ${IMPL_THREAD_FLAGS}
+	# Many of the programs in this directory need the 
+	# realtime library, librt; to keep this Makefile simple,
+	# we link *all* of the programs against that library.
+	# Some of the programs in this directory use POSIX thread
+	# and so require building with '-pthread'. To keep the Makefile
+	# simple, we build all of the programs with '-pthread'
 
 clean : 
 	${RM} ${EXE} *.o
@@ -33,4 +26,4 @@ clean :
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

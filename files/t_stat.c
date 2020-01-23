@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 15-1 */
 
 /* t_stat.c
 
@@ -17,8 +19,7 @@
 
    The '-l' option indicates that lstat() rather than stat() should be used.
 */
-#define _BSD_SOURCE     /* Get major() and minor() from <sys/types.h> */
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 #if defined(_AIX)
 #define _BSD
 #endif

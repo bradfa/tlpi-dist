@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 44-1 */
 
 /* change_case.c
 
@@ -55,8 +57,8 @@ main(int argc, char *argv[])
         while ((cnt = read(outbound[0], buf, BUF_SIZE)) > 0) {
             for (j = 0; j < cnt; j++)
                 buf[j] = toupper((unsigned char) buf[j]);
-            if (write(inbound[1], buf, cnt) == -1)
-                errExit("write");
+            if (write(inbound[1], buf, cnt) != cnt)
+                fatal("failed/partial write(): inbound pipe");
         }
 
         if (cnt == -1)
@@ -77,15 +79,15 @@ main(int argc, char *argv[])
            on the inbound pipe, and print them on stdout */
 
         while ((cnt = read(STDIN_FILENO, buf, BUF_SIZE)) > 0) {
-            if (write(outbound[1], buf, cnt) == -1)
-                errExit("write");
+            if (write(outbound[1], buf, cnt) != cnt)
+                fatal("failed/partial write(): outbound pipe");
 
             cnt = read(inbound[0], buf, BUF_SIZE);
             if (cnt == -1)
                 errExit("read");
             if (cnt > 0)
-                if (write(STDOUT_FILENO, buf, cnt) == -1)
-                    errExit("write");
+                if (write(STDOUT_FILENO, buf, cnt) != cnt)
+                    fatal("failed/partial write(): STDOUT_FILENO");
         }
 
         if (cnt == -1)

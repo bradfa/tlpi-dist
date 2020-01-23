@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 63-5 */
 
 /* epoll_input.c
 
@@ -91,10 +93,12 @@ main(int argc, char *argv[])
 
             } else if (evlist[j].events & (EPOLLHUP | EPOLLERR)) {
 
-                /* If EPOLLIN and EPOLLHUP were both set, then there might
-                   be more than MAX_BUF bytes to read. Therefore, we close
-                   the file descriptor only if EPOLLIN was not set.
-                   We'll read further bytes after the next epoll_wait(). */
+                /* After the epoll_wait(), EPOLLIN and EPOLLHUP may both have
+                   been set. But we'll only get here, and thus close the file
+                   descriptor, if EPOLLIN was not set. This ensures that all
+                   outstanding input (possibly more than MAX_BUF bytes) is
+                   consumed (by further loop iterations) before the file
+                   descriptor is closed. */
 
                 printf("    closing fd %d\n", evlist[j].data.fd);
                 if (close(evlist[j].data.fd) == -1)

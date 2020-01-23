@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 7-1 */
 
 /* free_and_sbrk.c
 
@@ -16,7 +18,7 @@
 
    Try: free_and_sbrk 1000 10240 2 1 1000
         free_and_sbrk 1000 10240 1 1 999
-        free_and_sbrk 1000 10240 1 1 500
+        free_and_sbrk 1000 10240 1 500 1000
 
         (Only the last of these should see the program break lowered.)
 */

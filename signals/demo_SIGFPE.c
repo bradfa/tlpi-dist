@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Supplementary program for Chapter 22 */
 
 /* demo_SIGFPE.c
 
@@ -50,8 +52,7 @@ main(int argc, char *argv[])
 
     if (argc > 1 && strchr(argv[1], 'i') != NULL) {
         printf("Ignoring SIGFPE\n");
-        if (signal(SIGFPE, SIG_IGN) == SIG_ERR)
-            errExit("signal");
+        if (signal(SIGFPE, SIG_IGN) == SIG_ERR)     errExit("signal");
     } else {
         printf("Catching SIGFPE\n");
         sigemptyset(&sa.sa_mask);
@@ -73,6 +74,7 @@ main(int argc, char *argv[])
     printf("About to generate SIGFPE\n");
     y = 0;
     x = 1 / y;
+    y = x;      /* Avoid complaints from "gcc -Wunused-but-set-variable" */
 
     if (blocking) {
         printf("Sleeping before unblocking\n");

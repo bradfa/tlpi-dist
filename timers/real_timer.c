@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 23-1 */
 
 /* real_timer.c
 
@@ -84,8 +86,6 @@ main(int argc, char *argv[])
     if (argc > 1 && strcmp(argv[1], "--help") == 0)
         usageErr("%s [secs [usecs [int-secs [int-usecs]]]]\n", argv[0]);
 
-    sigCnt = 0;
-
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     sa.sa_handler = sigalrmHandler;
@@ -105,7 +105,7 @@ main(int argc, char *argv[])
                 itv.it_interval.tv_usec == 0) ? 1 : 3;
 
     displayTimes("START:", FALSE);
-    if (setitimer(ITIMER_REAL, &itv, 0) == -1)
+    if (setitimer(ITIMER_REAL, &itv, NULL) == -1)
         errExit("setitimer");
 
     prevClock = clock();

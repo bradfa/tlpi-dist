@@ -11,13 +11,13 @@ all : ${EXE}
 
 allgen : ${GEN_EXE}
 
-LDLIBS = ${IMPL_LDLIBS} ${LINUX_LIBRT}
-	# All of the programs in this directory need the 
-	# realtime library, librt.
+CFLAGS = ${IMPL_CFLAGS} ${IMPL_THREAD_FLAGS}
+LDLIBS = ${IMPL_LDLIBS} ${IMPL_THREAD_FLAGS}
+	# POSIX semaphores need the NPTL thread library on Linux
 
-thread_incr_psem: thread_incr_psem.o
-	${CC} -o $@ thread_incr_psem.o \
-		${CFLAGS} ${IMPL_THREAD_FLAGS} ${LDLIBS}
+# psem_timedwait uses clock_gettime() which is in librt
+psem_timedwait: psem_timedwait.o
+	${CC} -o $@ psem_timedwait.o ${CFLAGS} ${LDLIBS} ${LINUX_LIBRT}
 
 clean : 
 	${RM} ${EXE} *.o
@@ -25,4 +25,4 @@ clean :
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

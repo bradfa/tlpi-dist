@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 27-2 */
 
 /* execlp.c
 
@@ -27,7 +29,7 @@
 extern char **environ;
 
 #define max(x,y) ((x) > (y) ? (x) : (y))
-#define SHELL_PATH "/bin/sh"            /* pathname for the standard shell */
+#define SHELL_PATH "/bin/sh"            /* Pathname for the standard shell */
 
 /* Exec a script file using the standard shell */
 
@@ -42,8 +44,8 @@ execShScript(int argc, char *argv[], char *envp[])
         shArgv[j + 1] = argv[j];
     execve(SHELL_PATH, shArgv, envp);
 
-    /* Only get here, if execve() fails, in which case we return
-       to our caller. */
+    /* We only get here if execve() fails, in which case we return
+       to our caller */
 }
 
 int
@@ -70,25 +72,33 @@ execlp(const char *filename, const char *arg, ...)
 
     argvSize = 100;
     argv = calloc(argvSize, sizeof(void *));
-    if (argv == NULL) return -1;
+    if (argv == NULL)
+        return -1;
 
     argv[0] = (char *) arg;
     argc = 1;
 
-    /* Walk variable length argument list until NULL terminator is found,
-       building argv as we go. */
+    /* Walk through variable-length argument list until NULL terminator
+       is found, building argv as we go */
 
     va_start(argList, arg);
     while (argv[argc - 1] != NULL) {
         if (argc + 1 >= argvSize) {     /* Resize argv if required */
+            char **nargv;
+
             argvSize += 100;
-            argv = realloc(argv, sizeof(void *));
-            if (argv == NULL) return -1;
+            nargv = realloc(argv, sizeof(void *));
+            if (nargv == NULL) {
+                free(argv);
+                return -1;
+            } else {
+                argv = nargv;
+            }
         }
 
         argv[argc] = va_arg(argList, char *);
         argc++;
-    } 
+    }
 
     va_end(argList);
 
@@ -97,7 +107,10 @@ execlp(const char *filename, const char *arg, ...)
     for (j = 0; environ[j] != NULL; )   /* Calculate size of environ */
         j++;
     envp = calloc(sizeof(void *), j + 1);
-    if (envp == NULL) return -1;
+    if (envp == NULL) {
+        free(argv);
+        return -1;
+    }
 
     for (j = 0; environ[j] != NULL; j++)    /* Duplicate environ in envp */
         envp[j] = strdup(environ[j]);
@@ -159,7 +172,7 @@ execlp(const char *filename, const char *arg, ...)
             else
                 prStart = prEnd + 1;    /* Move to start of next prefix */
 
-            /* Try to exec pathname. Execve() only returns if we failed. */
+            /* Try to exec pathname; execve() returns only if we failed */
 
             execve(pathname, argv, envp);
             savedErrno = errno;         /* So we can return correct errno */
@@ -184,7 +197,7 @@ execlp(const char *filename, const char *arg, ...)
         free(envp[j]);
     free(envp);
 
-    /* SUSv3 says that if any execve failed with EACCES then that
+    /* SUSv3 says that if any execve() failed with EACCES, then that
        is the error that should be returned by exec[lv]p() */
 
     errno = fndEACCES ? EACCES : savedErrno;

@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 4-3 */
 
 /* seek_io.c
 
@@ -20,7 +22,7 @@
            r<length>    Read 'length' bytes from the file at current
                         file offset, displaying them as text.
 
-           r<length>    Read 'length' bytes from the file at current
+           R<length>    Read 'length' bytes from the file at current
                         file offset, displaying them in hex.
 
            w<string>    Write 'string' at current file offset.
@@ -42,7 +44,7 @@ main(int argc, char *argv[])
     size_t len;
     off_t offset;
     int fd, ap, j;
-    char *buf;
+    unsigned char *buf;
     ssize_t numRead, numWritten;
 
     if (argc < 3 || strcmp(argv[1], "--help") == 0)
@@ -75,10 +77,9 @@ main(int argc, char *argv[])
                 printf("%s: ", argv[ap]);
                 for (j = 0; j < numRead; j++) {
                     if (argv[ap][0] == 'r')
-                        printf("%c", isprint((unsigned char) buf[j]) ?
-                                                buf[j] : '?');
+                        printf("%c", isprint(buf[j]) ?  buf[j] : '?');
                     else
-                        printf("%02x ", (unsigned int) buf[j]);
+                        printf("%02x ", buf[j]);
                 }
                 printf("\n");
             }
@@ -104,6 +105,9 @@ main(int argc, char *argv[])
             cmdLineErr("Argument must start with [rRws]: %s\n", argv[ap]);
         }
     }
+
+    if (close(fd) == -1)
+        errExit("close");
 
     exit(EXIT_SUCCESS);
 }

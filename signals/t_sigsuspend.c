@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 22-5 */
 
 /* t_sigsuspend.c
 
@@ -52,7 +54,9 @@ int
 main(int argc, char *argv[])
 {
     int loopNum;
+#ifdef USE_PAUSE
     int sleepTime;
+#endif
     time_t startTime;
     sigset_t origMask, blockMask;
     struct sigaction sa;
@@ -63,7 +67,9 @@ main(int argc, char *argv[])
     sigaddset(&blockMask, SIGINT);
     sigaddset(&blockMask, SIGQUIT);
 
+#ifdef USE_PAUSE
     sleepTime = (argc > 1) ? getInt(argv[1], GN_NONNEG, NULL) : 0;
+#endif
 
     /* Block SIGINT and SIGQUIT - at this point we assume that these signals
       are not already blocked (obviously true in this simple program) so that

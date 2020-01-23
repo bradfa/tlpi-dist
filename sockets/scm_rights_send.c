@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Supplementary program for Chapter 61 */
 
 /* scm_rights_send.c
 
@@ -17,37 +19,48 @@
 
    Usage is as shown in the usageErr() call below.
 
-   File descriptors can exchanged over stream or datagram sockets. This
+   File descriptors can be exchanged over stream or datagram sockets. This
    program uses stream sockets by default; the "-d" command-line option
    specifies that datagram sockets should be used instead.
 
    This program is Linux-specific.
+
+   See also scm_multi_recv.c.
 */
 #include "scm_rights.h"
 
 int
 main(int argc, char *argv[])
 {
-    struct msghdr msgh;
-    struct iovec iov;
     int data, sfd, opt, fd;
     ssize_t ns;
-    Boolean useDatagramSocket;
+    bool useDatagramSocket;
+    struct msghdr msgh;
+    struct iovec iov;
+
+    /* Allocate a char array of suitable size to hold the ancillary data.
+       However, since this buffer is in reality a 'struct cmsghdr', use a
+       union to ensure that it is aligned as required for that structure.
+       Alternatively, we could allocate the buffer using malloc(), which
+       returns a buffer that satisfies the strictest alignment
+       requirements of any type. */
+
     union {
-        struct cmsghdr cmh;
-        char   control[CMSG_SPACE(sizeof(int))];
+        char   buf[CMSG_SPACE(sizeof(int))];
                         /* Space large enough to hold an 'int' */
-    } control_un;
-    struct cmsghdr *cmhp;
+        struct cmsghdr align;
+    } controlMsg;
+    struct cmsghdr *cmsgp;      /* Pointer used to iterate through
+                                   headers in ancillary data */
 
-    /* Parse command-line arguments */
+    /* Parse command-line options */
 
-    useDatagramSocket = FALSE;
+    useDatagramSocket = false;
 
     while ((opt = getopt(argc, argv, "d")) != -1) {
         switch (opt) {
         case 'd':
-            useDatagramSocket = TRUE;
+            useDatagramSocket = true;
             break;
 
         default:
@@ -65,6 +78,14 @@ main(int argc, char *argv[])
     if (fd == -1)
         errExit("open");
 
+    /* The 'msg_name' field can be used to specify the address of the
+       destination socket when sending a datagram. However, we do not
+       need to use this field because we use connect() below, which sets
+       a default outgoing address for datagrams. */
+
+    msgh.msg_name = NULL;
+    msgh.msg_namelen = 0;
+
     /* On Linux, we must transmit at least 1 byte of real data in
        order to send ancillary data */
 
@@ -73,45 +94,51 @@ main(int argc, char *argv[])
     iov.iov_base = &data;
     iov.iov_len = sizeof(int);
     data = 12345;
+    fprintf(stderr, "Sending data = %d\n", data);
 
-    /* We don't need to specify destination address, because we use
-       connect() below */
+    /* Set 'msgh' fields to describe the ancillary data buffer */
 
-    msgh.msg_name = NULL;
-    msgh.msg_namelen = 0;
+    msgh.msg_control = controlMsg.buf;
+    msgh.msg_controllen = sizeof(controlMsg.buf);
 
-    msgh.msg_control = control_un.control;
-    msgh.msg_controllen = sizeof(control_un.control);
+    /* The control message buffer must be zero-initialized in order
+       for the CMSG_NXTHDR() macro to work correctly. Although we
+       don't need to use CMSG_NXTHDR() in this example (because
+       there is only one block of ancillary data), we show this
+       step to demonstrate best practice */
 
-    fprintf(stderr, "Sending fd %d\n", fd);
+    memset(controlMsg.buf, 0, sizeof(controlMsg.buf));
 
-    /* Set message header to describe ancillary data that we want to send */
+    /* Set message header to describe the ancillary data that
+       we want to send */
 
-    cmhp = CMSG_FIRSTHDR(&msgh);
-    cmhp->cmsg_len = CMSG_LEN(sizeof(int));
-    cmhp->cmsg_level = SOL_SOCKET;
-    cmhp->cmsg_type = SCM_RIGHTS;
-    *((int *) CMSG_DATA(cmhp)) = fd;
+    cmsgp = CMSG_FIRSTHDR(&msgh);
+    cmsgp->cmsg_len = CMSG_LEN(sizeof(int));
+    cmsgp->cmsg_level = SOL_SOCKET;
+    cmsgp->cmsg_type = SCM_RIGHTS;
+    *((int *) CMSG_DATA(cmsgp)) = fd;
 
-    /*
-    We could rewrite the preceding lines as:
-
-    control_un.cmh.cmsg_len = CMSG_LEN(sizeof(int));
-    control_un.cmh.cmsg_level = SOL_SOCKET;
-    control_un.cmh.cmsg_type = SCM_RIGHTS;
-    *((int *) CMSG_DATA(CMSG_FIRSTHDR(&msgh))) = fd;
-    */
-
-    /* Do the actual send */
+    /* Connect to the peer socket */
 
     sfd = unixConnect(SOCK_PATH, useDatagramSocket ? SOCK_DGRAM : SOCK_STREAM);
     if (sfd == -1)
         errExit("unixConnect");
+
+    fprintf(stderr, "Sending FD %d\n", fd);
+
+    /* Send real plus ancillary data */
 
     ns = sendmsg(sfd, &msgh, 0);
     if (ns == -1)
         errExit("sendmsg");
 
     fprintf(stderr, "sendmsg() returned %ld\n", (long) ns);
+
+    /* Once the file descriptor has been sent, it is no longer necessary
+       to keep it open in the sending process */
+
+    if (close(fd) == -1)
+        errExit("close");
+
     exit(EXIT_SUCCESS);
 }

@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Supplementary program for Chapter 28 */
 
 /* demo_clone.c
 
@@ -15,7 +17,9 @@
    This program creates a child using clone(). Various flags can be included
    in the clone() call by specifying option letters in the first command-line
    argument to the program (see usageError() below for a list of the option
-   letters).
+   letters). Note that not all combinations of flags are valid. See Section
+   28.2.1 or the clone(2) man page about information about which flag
+   combinations are required or invalid.
 
    This program is Linux-specific.
 */
@@ -26,6 +30,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <sched.h>
+#include <sys/mman.h>
 #include "print_wait_status.h"
 #include "tlpi_hdr.h"
 
@@ -50,7 +55,7 @@ childFunc(void *arg)
 
     cp = (ChildParams *) arg;   /* Cast arg to true form */
 
-    /* The following changes will affect parent */
+    /* The following changes may affect parent */
 
     umask(cp->umask);
     if (close(cp->fd) == -1)
@@ -100,7 +105,8 @@ main(int argc, char *argv[])
     const mode_t START_UMASK = S_IWOTH; /* Initial umask setting */
     struct sigaction sa;
     char *p;
-    int status, s;
+    int status;
+    ssize_t s;
     pid_t pid;
 
     printf("Parent: PID=%ld PPID=%ld\n", (long) getpid(), (long) getppid());
@@ -118,8 +124,7 @@ main(int argc, char *argv[])
         errExit("open");
 
     cp.signal = SIGTERM;                /* Child will change disposition */
-    if (signal(cp.signal, SIG_IGN) == SIG_ERR)
-        errExit("signal");
+    if (signal(cp.signal, SIG_IGN) == SIG_ERR)  errExit("signal");
 
     /* Initialize clone flags using command-line argument (if supplied) */
 
@@ -136,10 +141,12 @@ main(int argc, char *argv[])
 
     /* Allocate stack for child */
 
-    stack = malloc(STACK_SIZE);
-    if (stack == NULL)
-        errExit("malloc");
-    stackTop = stack + STACK_SIZE;  /* Assume stack grows downwards */
+    stack = mmap(NULL, STACK_SIZE, PROT_READ | PROT_WRITE,
+                 MAP_PRIVATE | MAP_ANONYMOUS | MAP_STACK, -1, 0);
+    if (stack == MAP_FAILED)
+        errExit("mmap");
+
+    stackTop = stack + STACK_SIZE;  /* Assume stack grows downward */
 
     /* Establish handler to catch child termination signal */
 

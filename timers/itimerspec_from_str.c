@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU Lesser General Public License as published   *
+* by the Free Software Foundation, either version 3 or (at your option)   *
+* any later version. This program is distributed without any warranty.    *
+* See the files COPYING.lgpl-v3 and COPYING.gpl-v3 for details.           *
+\*************************************************************************/
+
+/* Listing 23-6 */
 
 /* itimerspec_from_str.c
 
@@ -26,17 +28,19 @@
 void
 itimerspecFromStr(char *str, struct itimerspec *tsp)
 {
-    char *cptr, *sptr;
+    char *dupstr ,*cptr, *sptr;
 
-    cptr = strchr(str, ':');
+    dupstr = strdup(str);
+
+    cptr = strchr(dupstr, ':');
     if (cptr != NULL)
         *cptr = '\0';
 
-    sptr = strchr(str, '/');
+    sptr = strchr(dupstr, '/');
     if (sptr != NULL)
         *sptr = '\0';
 
-    tsp->it_value.tv_sec = atoi(str);
+    tsp->it_value.tv_sec = atoi(dupstr);
     tsp->it_value.tv_nsec = (sptr != NULL) ? atoi(sptr + 1) : 0;
 
     if (cptr == NULL) {
@@ -49,5 +53,6 @@ itimerspecFromStr(char *str, struct itimerspec *tsp)
         tsp->it_interval.tv_sec = atoi(cptr + 1);
         tsp->it_interval.tv_nsec = (sptr != NULL) ? atoi(sptr + 1) : 0;
     }
+    free(dupstr);
 }
 #endif

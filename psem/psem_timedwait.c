@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 53-2 */
 
 /* psem_timedwait.c
 
@@ -29,7 +31,7 @@ main(int argc, char *argv[])
     struct timespec ts;
 
     if (argc != 3 || strcmp(argv[1], "--help") == 0)
-        usageErr("%s sem-name nsecs\n", argv[0]);
+        usageErr("%s sem-name num-secs\n", argv[0]);
 
     sem = sem_open(argv[1], 0);
     if (sem == SEM_FAILED)

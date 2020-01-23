@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 40-4 */
 
 /* view_lastlog.c
 
@@ -50,8 +52,9 @@ main(int argc, char *argv[])
             continue;
         }
 
+        time_t ll_time = llog.ll_time;
         printf("%-8.8s %-6.6s %-20.20s %s", argv[j], llog.ll_line,
-                llog.ll_host, ctime((time_t *) &llog.ll_time));
+                llog.ll_host, ctime((time_t *) &ll_time));
     }
 
     close(fd);

@@ -1,16 +1,18 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 46-9 */
 
 /* svmsg_file_client.c
 
-   Send a message to the in server svmsg_file_server.c requesting the
+   Send a message to the server svmsg_file_server.c requesting the
    contents of the file named on the command line, and then receive the
    file contents via a series of messages sent back by the server. Display
    the total number of bytes and messages received. The server and client
@@ -74,8 +76,6 @@ main(int argc, char *argv[])
 
     if (resp.mtype == RESP_MT_FAILURE) {
         printf("%s\n", resp.data);      /* Display msg from server */
-        if (msgctl(clientId, IPC_RMID, NULL) == -1)
-            errExit("msgctl");
         exit(EXIT_FAILURE);
     }
 

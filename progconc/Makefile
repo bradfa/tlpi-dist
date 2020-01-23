@@ -13,10 +13,7 @@ allgen : ${GEN_EXE}
 clean : 
 	${RM} ${EXE} *.o
 
-syscall_speed : syscall_speed.o
-	${CC} -o $@ syscall_speed.o ${CFLAGS} ${LDLIBS}
-
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

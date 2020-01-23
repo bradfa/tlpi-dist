@@ -1,23 +1,25 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 50-2 */
 
 /* madvise_dontneed.c
 
    Demonstrate the "destructive" semantics of the madvise() MADV_DONTNEED
-   operation. On Linux, when MAD_DONTNEED is applied to a MAP_PRIVATE mapping,
+   operation. On Linux, when MADV_DONTNEED is applied to a MAP_PRIVATE mapping,
    the pages (and thus any modifications to the pages) are discarded; when
    next accessed, the pages are reinitialized from the underlying file.
 
    NOTE: MADV_DONTNEED is not destructive on some UNIX implementations.
 
-   The mincore() system call is upported on Linux since kernel 2.4.
+   The mincore() system call is supported on Linux since kernel 2.4.
 */
 #ifdef __linux__
 #define _BSD_SOURCE

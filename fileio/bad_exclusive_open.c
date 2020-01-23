@@ -1,18 +1,20 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 5-1 */
 
 /* bad_exclusive_open.c
 
    The following code shows why we need the open() O_EXCL flag.
 
-   This program tries ensure that it is the one that creates the file
+   This program to tries ensure that it is the one that creates the file
    named in its command-line argument. It does this by trying to open()
    the filename once without the O_CREAT flag (if this open() succeeds
    then the program know it is not the creator of the file), and if

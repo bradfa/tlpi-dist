@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 40-2 */
 
 /* dump_utmpx.c
 
@@ -65,7 +67,8 @@ main(int argc, char *argv[])
 
         in.s_addr = ut->ut_addr_v6[0];
         printf(" %-15.15s ", inet_ntoa(in));
-        printf("%s", ctime((time_t *) &(ut->ut_tv.tv_sec)));
+        time_t tv_sec = ut->ut_tv.tv_sec;
+        printf("%s", ctime((time_t *) &tv_sec));
     }
 
     endutxent();

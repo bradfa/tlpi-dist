@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Supplementary program for Chapter 14 */
 
 /* t_statfs.c
 
@@ -31,16 +33,24 @@ main(int argc, char *argv[])
     if (statfs(argv[1], &sfs) == -1)
         errExit("statfs");
 
-    printf("File system type:              %#x\n", (unsigned int) sfs.f_type);
-    printf("Optimal I/O block size:        %ld\n", (long) sfs.f_bsize);
-    printf("Total data blocks:             %ld\n", (long) sfs.f_blocks);
-    printf("Free data blocks:              %ld\n", (long) sfs.f_bfree);
-    printf("Free blocks for nonsuperuser:  %ld\n", (long) sfs.f_bavail);
-    printf("Total i-nodes:                 %ld\n", (long) sfs.f_files);
-    printf("File system ID:                %ld, %ld\n",
-            (long) sfs.f_fsid.__val[0],  (long) sfs.f_fsid.__val[1]);
-    printf("Free i-nodes:                  %ld\n", (long) sfs.f_ffree);
-    printf("Maximum file name length:      %ld\n", (long) sfs.f_namelen);
+    printf("File system type:              %#lx\n",
+            (unsigned long) sfs.f_type);
+    printf("Optimal I/O block size:        %lu\n",
+            (unsigned long) sfs.f_bsize);
+    printf("Total data blocks:             %lu\n",
+            (unsigned long) sfs.f_blocks);
+    printf("Free data blocks:              %lu\n",
+            (unsigned long) sfs.f_bfree);
+    printf("Free blocks for nonsuperuser:  %lu\n",
+            (unsigned long) sfs.f_bavail);
+    printf("Total i-nodes:                 %lu\n",
+            (unsigned long) sfs.f_files);
+    printf("File system ID:                %#x, %#x\n",
+            (unsigned) sfs.f_fsid.__val[0], (unsigned) sfs.f_fsid.__val[1]);
+    printf("Free i-nodes:                  %lu\n",
+            (unsigned long) sfs.f_ffree);
+    printf("Maximum file name length:      %lu\n",
+            (unsigned long) sfs.f_namelen);
 
     exit(EXIT_SUCCESS);
 }

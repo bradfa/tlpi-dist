@@ -2,7 +2,7 @@ include ../Makefile.inc
 
 GEN_EXE =
 
-LINUX_EXE = demo_inotify dnotify
+LINUX_EXE = demo_inotify dnotify inotify_dtree rand_dtree
 
 EXE = ${GEN_EXE} ${LINUX_EXE}
 
@@ -18,4 +18,4 @@ clean :
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

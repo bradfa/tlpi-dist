@@ -25,16 +25,16 @@ allgen : ${GEN_EXE}
 #
 
 ouch : ouch.c
-	${CC} -D_BSD_SOURCE -o $@ ouch.c ${CFLAGS} ${LDLIBS}
+	${CC} -D_BSD_SOURCE -o $@ ouch.c ${CFLAGS} ${IMPL_LDLIBS}
 
 intquit : intquit.c
-	${CC} -D_BSD_SOURCE -o $@ intquit.c ${CFLAGS} ${LDLIBS}
+	${CC} -D_BSD_SOURCE -o $@ intquit.c ${CFLAGS} ${IMPL_LDLIBS}
 
 sig_receiver : sig_receiver.c
-	${CC} -D_BSD_SOURCE -o $@ sig_receiver.c ${CFLAGS} ${LDLIBS}
+	${CC} -D_BSD_SOURCE -o $@ sig_receiver.c ${CFLAGS} ${IMPL_LDLIBS}
 
 nonreentrant : nonreentrant.o
-	${CC} -o $@ nonreentrant.o ${CFLAGS} ${LDLIBS} ${LINUX_LIBCRYPT}
+	${CC} -o $@ nonreentrant.o ${CFLAGS} ${IMPL_LDLIBS} ${LINUX_LIBCRYPT}
 
 sigmask_siglongjmp.o : sigmask_longjmp.c
 	${CC} -o $@ -DUSE_SIGSETJMP -c sigmask_longjmp.c ${CFLAGS}
@@ -45,4 +45,4 @@ clean :
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

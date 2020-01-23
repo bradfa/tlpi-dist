@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 18-7 */
 
 /* file_type_stats.c
 
@@ -24,11 +26,18 @@
 #include "tlpi_hdr.h"
 
 static int numReg = 0, numDir = 0, numSymLk = 0, numSocket = 0,
-           numFifo = 0, numChar = 0, numBlock = 0;
+           numFifo = 0, numChar = 0, numBlock = 0,
+           numNonstatable = 0;
 
 static int
 countFile(const char *path, const struct stat *sb, int flag, struct FTW *ftwb)
+
 {
+    if (flag == FTW_NS) {
+        numNonstatable++;
+        return 0;
+    }
+
     switch (sb->st_mode & S_IFMT) {
     case S_IFREG:  numReg++;    break;
     case S_IFDIR:  numDir++;    break;
@@ -63,7 +72,7 @@ main(int argc, char *argv[])
     }
 
     numFiles = numReg + numDir + numSymLk + numSocket +
-                numFifo + numChar + numBlock;
+                numFifo + numChar + numBlock + numNonstatable;
 
     if (numFiles == 0) {
         printf("No files found\n");
@@ -76,6 +85,7 @@ main(int argc, char *argv[])
         printStats("Symbolic link:", numSymLk, numFiles);
         printStats("FIFO:", numFifo, numFiles);
         printStats("Socket:", numSocket, numFiles);
+        printStats("Non-statable:", numNonstatable, numFiles);
     }
     exit(EXIT_SUCCESS);
 }

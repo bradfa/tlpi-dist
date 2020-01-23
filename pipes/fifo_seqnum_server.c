@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 44-7 */
 
 /* fifo_seqnum_server.c
 
@@ -56,8 +58,7 @@ main(int argc, char *argv[])
 
     /* Let's find out about broken client pipe via failed write() */
 
-    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
-        errExit("signal");
+    if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)    errExit("signal");
 
     for (;;) {                          /* Read requests and send responses */
         if (read(serverFd, &req, sizeof(struct request))

@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 44-5 */
 
 /* popen_glob.c
 
@@ -85,7 +87,7 @@ main(int argc, char *argv[])
 
         status = pclose(fp);
         printf("    %d matching file%s\n", fileCnt, (fileCnt != 1) ? "s" : "");
-        printf("    pclose() status == %#x\n", (unsigned int) status);
+        printf("    pclose() status = %#x\n", (unsigned int) status);
         if (status != -1)
             printWaitStatus("\t", status);
     }

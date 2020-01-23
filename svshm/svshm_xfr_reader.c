@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 48-3 */
 
 /* svshm_xfr_reader.c
 
@@ -31,7 +33,7 @@ main(int argc, char *argv[])
     if (shmid == -1)
         errExit("shmget");
 
-    /* Attach shared memory read-only, as we will only be reading */
+    /* Attach shared memory read-only, as we will only read */
 
     shmp = shmat(shmid, NULL, SHM_RDONLY);
     if (shmp == (void *) -1)

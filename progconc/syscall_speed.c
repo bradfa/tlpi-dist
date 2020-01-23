@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Supplementary program for Chapter 3 */
 
 /* syscall_speed.c
 
@@ -29,7 +31,7 @@ static int myfunc() { return 1; }
 int
 main(int argc, char *argv[])
 {
-    int numCalls, j, s;
+    int numCalls, j;
 
     numCalls = (argc > 1) ? getInt(argv[1], GN_GT_0, "num-calls") : 10000000;
 
@@ -41,9 +43,9 @@ main(int argc, char *argv[])
 
     for (j = 0; j < numCalls; j++)
 #ifdef NOSYSCALL
-        s = myfunc();
+        myfunc();
 #else
-        s = getppid();
+        getppid();
 #endif
 
     exit(EXIT_SUCCESS);

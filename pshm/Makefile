@@ -10,9 +10,10 @@ all : ${EXE}
 
 allgen : ${GEN_EXE}
 
-CFLAGS = ${IMPL_CFLAGS} ${LINUX_LIBRT}
-	# On Linux, all of the programs in this directory need the 
+LDLIBS = ${IMPL_LDLIBS} ${LINUX_LIBRT}
+	# All of the programs in this directory need the 
 	# realtime library, librt.
+
 
 clean : 
 	${RM} ${EXE} *.o
@@ -20,4 +21,4 @@ clean :
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

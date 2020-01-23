@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 54-2 */
 
 /* pshm_write.c
 
@@ -43,7 +45,7 @@ main(int argc, char *argv[])
     if (addr == MAP_FAILED)
         errExit("mmap");
 
-    if (close(fd) == -1)                    /* 'fd' is mo longer needed */
+    if (close(fd) == -1)                    /* 'fd' is no longer needed */
         errExit("close");
 
     printf("copying %ld bytes\n", (long) len);

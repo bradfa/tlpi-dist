@@ -19,4 +19,4 @@ svshm_xfr_reader.o svshm_xfr_writer.o: svshm_xfr.h
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

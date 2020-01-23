@@ -14,4 +14,10 @@ clean :
 showall :
 	@ echo ${EXE}
 
-${EXE} : ${LPLIB}		# True as a rough approximation
+cal_time: cal_time.o
+	${CC} -o $@ cal_time.o ${CFLAGS} ${IMPL_LDLIBS} ${LINUX_LIBRT}
+
+process_time_test: process_time_test.o
+	${CC} -o $@ process_time_test.o ${CFLAGS} ${IMPL_LDLIBS} ${LINUX_LIBRT}
+
+${EXE} : ${TLPI_LIB}		# True as a rough approximation

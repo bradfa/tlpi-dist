@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 59-3:d */
 
 /* us_xfr_v2_sv.c
 
@@ -26,9 +28,12 @@ main(int argc, char *argv[])
     ssize_t numRead;
     char buf[BUF_SIZE];
 
-    sfd = unixListen(SV_SOCK_PATH, 5);
+    sfd = unixBind(SV_SOCK_PATH, SOCK_STREAM);
     if (sfd == -1)
-        errExit("unixListen");
+        errExit("unixBind");
+
+    if (listen(sfd, 5) == -1)
+        errExit("listen");
 
     for (;;) {          /* Handle client connections iteratively */
         cfd = accept(sfd, NULL, NULL);

@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 31-1 */
 
 /* one_time_init.c
 
@@ -21,9 +23,9 @@ struct once_struct {            /* Our equivalent of pthread_once_t */
     int called;
 };
 
-#define ONCE_INITIALISER { PTHREAD_MUTEX_INITIALIZER, 0 }
+#define ONCE_INITIALIZER { PTHREAD_MUTEX_INITIALIZER, 0 }
 
-struct once_struct once = ONCE_INITIALISER;
+struct once_struct once = ONCE_INITIALIZER;
 
 static int
 one_time_init(struct once_struct *once_control, void (*init)(void))
@@ -61,7 +63,7 @@ static void *
 threadFunc(void *arg)
 {
     /* The following allows us to verify that even if a single thread calls
-       one_time_init() multiple times, init_func() is only called once */
+       one_time_init() multiple times, init_func() is called only once */
 
     one_time_init(&once, init_func);
     one_time_init(&once, init_func);

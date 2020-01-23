@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Supplementary program for Chapter 35 */
 
 /* t_sched_setaffinity.c
 
@@ -34,7 +36,6 @@ main(int argc, char *argv[])
 {
     pid_t pid;
     cpu_set_t set;
-    int cpu;
     unsigned long mask;
 
     if (argc != 3 || strcmp(argv[1], "--help") == 0)
@@ -45,7 +46,7 @@ main(int argc, char *argv[])
 
     CPU_ZERO(&set);
 
-    for (cpu = 0; mask > 0; cpu++, mask >>= 1)
+    for (int cpu = 0; mask > 0; cpu++, mask >>= 1)
         if (mask & 1)
             CPU_SET(cpu, &set);
 

@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 18-3 */
 
 /* nftw_dir_tree.c
 
@@ -15,7 +17,7 @@
    is specified on the command line), displaying an indented hierarchy
    of files in the tree. For each file, display:
 
-      * a letter indicating the file type type (using the same letters
+      * a letter indicating the file type (using the same letters
         as "ls -l"), as obtained using stat(2);
       * a string indicating the file type, as supplied by nftw(); and
       * the file's i-node number.
@@ -46,19 +48,22 @@ static int                      /* Function called by nftw() */
 dirTree(const char *pathname, const struct stat *sbuf, int type,
         struct FTW *ftwb)
 {
-    switch (sbuf->st_mode & S_IFMT) {       /* Print file type */
-    case S_IFREG:  printf("-"); break;
-    case S_IFDIR:  printf("d"); break;
-    case S_IFCHR:  printf("c"); break;
-    case S_IFBLK:  printf("b"); break;
-    case S_IFLNK:  printf("l"); break;
-    case S_IFIFO:  printf("p"); break;
-    case S_IFSOCK: printf("s"); break;
-    default:       printf("?"); break;      /* Should never happen (on Linux) */
+    if (type == FTW_NS) {                  /* Could not stat() file */
+        printf("?");
+    } else {
+        switch (sbuf->st_mode & S_IFMT) {  /* Print file type */
+        case S_IFREG:  printf("-"); break;
+        case S_IFDIR:  printf("d"); break;
+        case S_IFCHR:  printf("c"); break;
+        case S_IFBLK:  printf("b"); break;
+        case S_IFLNK:  printf("l"); break;
+        case S_IFIFO:  printf("p"); break;
+        case S_IFSOCK: printf("s"); break;
+        default:       printf("?"); break; /* Should never happen (on Linux) */
+        }
     }
 
-    printf(" %s  ",
-            (type == FTW_D)  ? "D  " : (type == FTW_DNR) ? "DNR" :
+    printf(" %s  ", (type == FTW_D)  ? "D  " : (type == FTW_DNR) ? "DNR" :
             (type == FTW_DP) ? "DP " : (type == FTW_F)   ? "F  " :
             (type == FTW_SL) ? "SL " : (type == FTW_SLN) ? "SLN" :
             (type == FTW_NS) ? "NS " : "  ");

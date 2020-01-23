@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU Lesser General Public License as published   *
+* by the Free Software Foundation, either version 3 or (at your option)   *
+* any later version. This program is distributed without any warranty.    *
+* See the files COPYING.lgpl-v3 and COPYING.gpl-v3 for details.           *
+\*************************************************************************/
+
+/* Listing 55-4 */
 
 /* create_pid_file.c
 
@@ -47,7 +49,7 @@ createPidFile(const char *progName, const char *pidFile, int flags)
 
         /* Instead of the following steps, we could (on Linux) have opened the
            file with O_CLOEXEC flag. However, not all systems support open()
-           O_CLOEXEC (which was only standardized in SUSv4), so instead we use
+           O_CLOEXEC (which was standardized only in SUSv4), so instead we use
            fcntl() to set the close-on-exec flag after opening the file */
 
         flags = fcntl(fd, F_GETFD);                     /* Fetch flags */

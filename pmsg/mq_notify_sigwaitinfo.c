@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 52-6 */
 
 /* mq_notify_sigwaitinfo.c
 
@@ -14,8 +16,6 @@
 
    Demonstrate message notification via signals (accepting the signals with
    sigwaitinfo()) on a POSIX message queue.
-
-   Linux supports POSIX message queues since kernel 2.6.6.
 */
 #define _POSIX_C_SOURCE 199309
 #include <signal.h>
@@ -24,6 +24,12 @@
 #include "tlpi_hdr.h"
 
 #define NOTIFY_SIG SIGRTMIN     /* Signal used for message notifications */
+
+/* This program does not handle the case where a message already exists on
+   the queue by the time the first attempt is made to register for message
+   notification. In that case, the program would never receive a notification.
+   Compare mq_notify_sig.c and mq_notify_via_signal.c for some hints on how
+   this program might be modified to handle that case. */
 
 int
 main(int argc, char *argv[])
@@ -75,7 +81,8 @@ main(int argc, char *argv[])
         /* Wait for a signal; when it is received, display associated
            information */
 
-        if (sigwaitinfo(&blockMask, &si) == -1)errExit("sigwaitinfo");
+        if (sigwaitinfo(&blockMask, &si) == -1)
+            errExit("sigwaitinfo");
 
         printf("Accepted signal:\n");
         printf("        si_signo   = %d\n", si.si_signo);

@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 40-3 */
 
 /* utmpx_login.c
 
@@ -73,8 +75,7 @@ main(int argc, char *argv[])
        except for changes below */
 
     ut.ut_type = DEAD_PROCESS;          /* Required for logout record */
-    time((time_t *) &ut.ut_tv.tv_sec);
-                                        /* Stamp with logout time */
+    time((time_t *) &ut.ut_tv.tv_sec);  /* Stamp with logout time */
     memset(&ut.ut_user, 0, sizeof(ut.ut_user));
                                         /* Logout record has null username */
 

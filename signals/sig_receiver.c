@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 20-7 */
 
 /* sig_receiver.c
 
@@ -42,6 +44,10 @@ main(int argc, char *argv[])
     sigset_t pendingMask, blockingMask, emptyMask;
 
     printf("%s: PID is %ld\n", argv[0], (long) getpid());
+
+    /* Here we use the simpler signal() API to establish a signal handler,
+       but for the reasons described in Section 22.7 of TLPI, sigaction()
+       is the (strongly) preferred API for this task. */
 
     for (n = 1; n < NSIG; n++)          /* Same handler for all signals */
         (void) signal(n, handler);      /* Ignore errors */

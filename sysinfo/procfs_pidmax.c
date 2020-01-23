@@ -1,18 +1,20 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 12-1 */
 
 /* procfs_pidmax.c
 
    This program demonstrates how to access a file in the /proc file system. It
    can be used to read and modify the /proc/sys/kernel/pid_max file (which is
-   only available in Linux 2.6 and later).
+   available only in Linux 2.6 and later).
 
    Usage: procfs_pidmax [new-pidmax]
 
@@ -48,6 +50,9 @@ main(int argc, char *argv[])
     printf("%.*s", (int) n, line);
 
     if (argc > 1) {
+        if (lseek(fd, 0, SEEK_SET) == -1)
+            errExit("lseek");
+
         if (write(fd, argv[1], strlen(argv[1])) != strlen(argv[1]))
             fatal("write() failed");
 

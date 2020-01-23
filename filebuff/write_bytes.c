@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Supplementary program for Chapter 13 */
 
 /* write_bytes.c
 
@@ -18,10 +20,10 @@
    for each write().
 
    If compiled with -DUSE_O_SYNC, open the file with the O_SYNC flag,
-   so that all writes (data and metadata) are flushed to disk.
+   so that all data and metadata changes are flushed to the disk.
 
    If compiled with -DUSE_FDATASYNC, perform an fdatasync() after each write,
-   so that data is flushed to the disk.
+   so that data--and possibly metadata--changes are flushed to the disk.
 
    If compiled with -DUSE_FSYNC, perform an fsync() after each write, so that
    data and metadata are flushed to the disk.

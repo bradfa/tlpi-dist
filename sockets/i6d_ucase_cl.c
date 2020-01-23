@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 59-4 */
 
 /* i6d_ucase_cl.c
 
@@ -27,7 +29,7 @@ main(int argc, char *argv[])
     if (argc < 3 || strcmp(argv[1], "--help") == 0)
         usageErr("%s host-address msg...\n", argv[0]);
 
-    /* Create a datagram socket; send to an address in the IPv6 somain */
+    /* Create a datagram socket; send to an address in the IPv6 domain */
 
     sfd = socket(AF_INET6, SOCK_DGRAM, 0);      /* Create client socket */
     if (sfd == -1)

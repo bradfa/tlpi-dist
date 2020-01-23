@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU Lesser General Public License as published   *
+* by the Free Software Foundation, either version 3 or (at your option)   *
+* any later version. This program is distributed without any warranty.    *
+* See the files COPYING.lgpl-v3 and COPYING.gpl-v3 for details.           *
+\*************************************************************************/
+
+/* Listing 3-1 */
 
 /* tlpi_hdr.h
 
@@ -22,6 +24,7 @@
 #include <unistd.h>     /* Prototypes for many system calls */
 #include <errno.h>      /* Declares errno and defines error constants */
 #include <string.h>     /* Commonly used string-handling functions */
+#include <stdbool.h>    /* 'bool' type plus 'true' and 'false' constants */
 
 #include "get_num.h"    /* Declares our functions for handling numeric
                            arguments (getInt(), getLong()) */
@@ -49,12 +52,6 @@ typedef enum { FALSE, TRUE } Boolean;
 #if defined(__sgi)
 typedef int socklen_t;
 #endif
-
-/* The remainder of this file creates various definitions to help
-   the example programs run on UNIX implementations other than Linux. */
-
-#include "alt_functions.h"      /* Declares simple replacements for some
-                                   functions that are absent on other systems */
 
 #if defined(__sun)
 #include <sys/file.h>           /* Has definition of FASYNC */

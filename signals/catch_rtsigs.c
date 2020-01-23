@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 22-3 */
 
 /* catch_rtsigs.c
 
@@ -38,7 +40,7 @@
 
 static volatile int handlerSleepTime;
 static volatile int sigCnt = 0;         /* Number of signals received */
-static volatile int allDone = 0;
+static volatile sig_atomic_t allDone = 0;
 
 static void             /* Handler for signals established using SA_SIGINFO */
 siginfoHandler(int sig, siginfo_t *si, void *ucontext)

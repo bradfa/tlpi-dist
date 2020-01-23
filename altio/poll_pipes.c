@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 63-2 */
 
 /* poll_pipes.c
 
@@ -26,9 +28,9 @@
 int
 main(int argc, char *argv[])
 {
-    int numPipes, j, ready, randPipe, numWrites;
-    int (*pfds)[2];                     /* File descriptors for all pipes */
+    int numPipes, ready, randPipe, numWrites, j;
     struct pollfd *pollFd;
+    int (*pfds)[2];                     /* File descriptors for all pipes */
 
     if (argc < 2 || strcmp(argv[1], "--help") == 0)
         usageErr("%s num-pipes [num-writes]\n", argv[0]);
@@ -37,13 +39,14 @@ main(int argc, char *argv[])
        to the number of pipes specified on command line */
 
     numPipes = getInt(argv[1], GN_GT_0, "num-pipes");
+    numWrites = (argc > 2) ? getInt(argv[2], GN_GT_0, "num-writes") : 1;
 
     pfds = calloc(numPipes, sizeof(int [2]));
     if (pfds == NULL)
-        errExit("malloc");
+        errExit("calloc");
     pollFd = calloc(numPipes, sizeof(struct pollfd));
     if (pollFd == NULL)
-        errExit("malloc");
+        errExit("calloc");
 
     /* Create the number of pipes specified on command line */
 
@@ -52,8 +55,6 @@ main(int argc, char *argv[])
             errExit("pipe %d", j);
 
     /* Perform specified number of writes to random pipes */
-
-    numWrites = (argc > 2) ? getInt(argv[2], GN_GT_0, "num-writes") : 1;
 
     srandom((int) time(NULL));
     for (j = 0; j < numWrites; j++) {
@@ -73,7 +74,7 @@ main(int argc, char *argv[])
         pollFd[j].events = POLLIN;
     }
 
-    ready = poll(pollFd, numPipes, -1);         /* Nonblocking */
+    ready = poll(pollFd, numPipes, 0);
     if (ready == -1)
         errExit("poll");
 
@@ -83,7 +84,7 @@ main(int argc, char *argv[])
 
     for (j = 0; j < numPipes; j++)
         if (pollFd[j].revents & POLLIN)
-            printf("Readable: %d %3d\n", j, pollFd[j].fd);
+            printf("Readable: %3d\n", pollFd[j].fd);
 
     exit(EXIT_SUCCESS);
 }

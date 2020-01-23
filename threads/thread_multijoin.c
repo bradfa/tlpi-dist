@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 30-4 */
 
 /* thread_multijoin.c
 
@@ -82,7 +84,7 @@ main(int argc, char *argv[])
     int s, idx;
 
     if (argc < 2 || strcmp(argv[1], "--help") == 0)
-        usageErr("%s nsecs...\n", argv[0]);
+        usageErr("%s num-secs...\n", argv[0]);
 
     thread = calloc(argc - 1, sizeof(*thread));
     if (thread == NULL)
@@ -115,7 +117,7 @@ main(int argc, char *argv[])
         }
 
         for (idx = 0; idx < totThreads; idx++) {
-            if (thread[idx].state == TS_TERMINATED){
+            if (thread[idx].state == TS_TERMINATED) {
                 s = pthread_join(thread[idx].tid, NULL);
                 if (s != 0)
                     errExitEN(s, "pthread_join");

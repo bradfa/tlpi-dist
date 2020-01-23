@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 28-3 */
 
 /* t_clone.c
 
@@ -61,8 +63,7 @@ main(int argc, char *argv[])
        by default), since that would prevent the creation of a zombie. */
 
     if (CHILD_SIG != 0 && CHILD_SIG != SIGCHLD)
-        if (signal(CHILD_SIG, SIG_IGN) == SIG_ERR)
-            errExit("signal");
+        if (signal(CHILD_SIG, SIG_IGN) == SIG_ERR)          errExit("signal");
 
     /* Create child; child commences execution in childFunc() */
 

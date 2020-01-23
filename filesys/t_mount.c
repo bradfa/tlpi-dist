@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 14-1 */
 
 /* t_mount.c
 
@@ -58,6 +60,10 @@
 #define MS_SHARED (1<<20) /* change to shared */
 #endif
 
+#ifndef MS_LAZYTIME
+#define MS_LAZYTIME     (1<<25)
+#endif
+
 static void
 usageError(const char *progName, const char *msg)
 {
@@ -75,6 +81,7 @@ usageError(const char *progName, const char *msg)
     fpe2("b - MS_BIND         create a bind mount\n");
     fpe2("d - MS_DIRSYNC      synchronous directory updates\n");
     fpe2("l - MS_MANDLOCK     permit mandatory locking\n");
+    fpe2("L - MS_LAZYATIME    lazy atime updates\n");
     fpe2("m - MS_MOVE         atomically move subtree\n");
     fpe2("A - MS_NOATIME      don't update atime (last access time)\n");
     fpe2("V - MS_NODEV        don't permit device access\n");
@@ -84,6 +91,7 @@ usageError(const char *progName, const char *msg)
     fpe2("p - MS_PRIVATE      mark as private\n");
     fpe2("r - MS_RDONLY       read-only mount\n");
     fpe2("c - MS_REC          recursive mount\n");
+    fpe2("T - MS_RELATIME     relative atime updates\n");
     fpe2("R - MS_REMOUNT      remount\n");
     fpe2("h - MS_SHARED       mark as shared\n");
     fpe2("v - MS_SLAVE        mark as slave\n");
@@ -132,6 +140,7 @@ main(int argc, char *argv[])
                 case 'p': flags |= MS_PRIVATE;          break;
                 case 'r': flags |= MS_RDONLY;           break;
                 case 'c': flags |= MS_REC;              break;
+                case 'T': flags |= MS_RELATIME;         break;
                 case 'R': flags |= MS_REMOUNT;          break;
                 case 'h': flags |= MS_SHARED;           break;
                 case 'v': flags |= MS_SLAVE;            break;

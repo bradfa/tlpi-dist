@@ -12,7 +12,7 @@ or two letters:
 The socket type is one of the following:
 
     d   datagram
-    s   socket
+    s   stream
 
 A suffix indicates whether the program is a client or server:
 

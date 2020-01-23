@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 55-1 */
 
 /* t_flock.c
 
@@ -28,7 +30,7 @@ main(int argc, char *argv[])
         usageErr("%s file lock [sleep-time]\n"
                  "    'lock' is 's' (shared) or 'x' (exclusive)\n"
                  "        optionally followed by 'n' (nonblocking)\n"
-                 "    'secs' specifies time to hold lock\n", argv[0]);
+                 "    'sleep-time' specifies time to hold lock\n", argv[0]);
 
     lock = (argv[2][0] == 's') ? LOCK_SH : LOCK_EX;
     if (argv[2][1] == 'n')

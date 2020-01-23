@@ -1,23 +1,29 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 52-7 */
 
 /* mq_notify_thread.c
 
    Demonstrate message notification via threads on a POSIX message queue.
-
-   Linux supports POSIX message queues since kernel 2.6.6.
 */
 #include <pthread.h>
 #include <mqueue.h>
+#include <signal.h>
 #include <fcntl.h>              /* For definition of O_NONBLOCK */
 #include "tlpi_hdr.h"
+
+/* This program does not handle the case where a message already exists on
+   the queue by the time the first attempt is made to register for message
+   notification. In that case, the program would never receive a notification.
+   See mq_notify_via_thread.c for an example of how to deal with that case. */
 
 static void notifySetup(mqd_t *mqdp);
 
@@ -52,7 +58,6 @@ threadFunc(union sigval sv)
         errExit("mq_receive");
 
     free(buffer);
-    pthread_exit(NULL);
 }
 
 static void

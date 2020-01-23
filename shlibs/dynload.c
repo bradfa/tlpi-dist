@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Listing 42-1 */
 
 /* dynload.c
 
@@ -37,18 +39,42 @@ main(int argc, char *argv[])
     /* Search library for symbol named in argv[2] */
 
     (void) dlerror();                           /* Clear dlerror() */
-    *(void **) (&funcp) = dlsym(libHandle, argv[2]);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+    funcp = (void (*)(void)) dlsym(libHandle, argv[2]);
+#pragma GCC diagnostic pop
+
+    /* In the book, instead of the preceding line, the code uses a
+       rather clumsy looking cast of the form:
+
+           *(void **) (&funcp) = dlsym(libHandle, argv[2]);
+
+       This was done because the ISO C standard does not require compilers
+       to allow casting of pointers to functions back and forth to 'void *'.
+       (See TLPI pages 863-864.) SUSv3 TC1 and SUSv4 accepted the ISO C
+       requirement and proposed the clumsy cast as the workaround. However,
+       the 2013 Technical Corrigendum to SUSv4 requires implementations
+       to support casts of the more natural form (now) used in the code
+       above. However, various current compilers (e.g., gcc with the
+       '-pedantic' flag) may still complain about such casts. Therefore,
+       we use a gcc pragma to disable the warning.
+
+       Note that this pragma is available only since gcc 4.6, released in
+       2010. If you are using an older compiler, the pragma will generate
+       an error. In that case, simply edit this program to remove the
+       lines above that begin with '#pragma".
+
+       See also the erratum note for page 864 at
+       http://www.man7.org/tlpi/errata/. */
+
     err = dlerror();
     if (err != NULL)
         fatal("dlsym: %s", err);
 
-    /* If the address returned by dlsym() is non-NULL, try calling it
-       as a function that takes no arguments */
+    /* Try calling the address returned by dlsym() as a function
+       that takes no arguments */
 
-    if (funcp == NULL)
-        printf("%s is NULL\n", argv[2]);
-    else
-        (*funcp)();
+    (*funcp)();
 
     dlclose(libHandle);                         /* Close the library */
 

@@ -1,12 +1,14 @@
-/**********************************************************************\
-*                Copyright (C) Michael Kerrisk, 2010.                  *
-*                                                                      *
-* This program is free software. You may use, modify, and redistribute *
-* it under the terms of the GNU Affero General Public License as       *
-* published by the Free Software Foundation, either version 3 or (at   *
-* your option) any later version. This program is distributed without  *
-* any warranty. See the file COPYING for details.                      *
-\**********************************************************************/
+/*************************************************************************\
+*                  Copyright (C) Michael Kerrisk, 2019.                   *
+*                                                                         *
+* This program is free software. You may use, modify, and redistribute it *
+* under the terms of the GNU General Public License as published by the   *
+* Free Software Foundation, either version 3 or (at your option) any      *
+* later version. This program is distributed without any warranty.  See   *
+* the file COPYING.gpl-v3 for details.                                    *
+\*************************************************************************/
+
+/* Solution for Exercise 12-1 */
 
 /* procfs_user_exe.c
 
@@ -19,12 +21,12 @@
    This program is Linux-specific.
 */
 #define _GNU_SOURCE
-#include "ugid_functions.h"
-#include "tlpi_hdr.h"
 #include <limits.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <ctype.h>
+#include "ugid_functions.h"
+#include "tlpi_hdr.h"
 
 #define MAX_LINE 1000
 
